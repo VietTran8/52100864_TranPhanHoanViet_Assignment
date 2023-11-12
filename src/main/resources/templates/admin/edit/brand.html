@@ -1,0 +1,16 @@
+<!-- Edit brand -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Edit brand</h3>
+    <hr>    
+    <div class="row">
+        <form th:action="@{/admin/brand/edit}" method="post">
+            <div class="mb-3">
+                <input type="hidden" name="id" th:value="${brand.id}">
+                <label class="form-label">Brand name</label>
+                <input type="text" class="form-control" name="brandName" th:value="${brand.name}">
+            </div>
+            <button type="submit" class="btn btn-success">Update brand</button>
+        </form>
+    </div>
+</div>
+<!-- Edit brand -->

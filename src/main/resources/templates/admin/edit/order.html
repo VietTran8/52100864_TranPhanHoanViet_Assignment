@@ -1,0 +1,20 @@
+<!-- Edit order -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Edit order</h3>
+    <hr>    
+    <div class="row">
+        <form th:action="@{/admin/order/edit}" method="post">
+            <div class="mb-3">
+                <input type="hidden" name="id" th:value="${order.id}">
+                <label class="form-label">Order status</label>
+                <select class="form-select" name="status" id="status">
+                    <option th:each="i : ${#numbers.sequence(0, 1)}" th:value="${i==0} ? 'STATUS_PAID' : 'STATUS_NOT_PAID'" 
+                        th:text="${i==0} ? 'Paid' : 'Not paid'" 
+                        th:selected="${i} == ${isPaid}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success">Update order status</button>
+        </form>
+    </div>
+</div>
+<!-- Edit order -->

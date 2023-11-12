@@ -1,0 +1,22 @@
+<!-- Add account -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Add account</h3>
+    <hr>
+    <div class="row">
+        <form th:action="@{/admin/account/add}" method="post" autocomplete="off">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+            <div th:classappend="${param.error} != null ? 'show' : 'fade' " class="alert alert-danger" role="alert">
+                Username is already in use!
+            </div>
+            <button type="submit" class="btn btn-success">Add account</button>
+        </form>
+    </div>
+</div>
+<!-- Add account -->

@@ -1,0 +1,77 @@
+<!-- Color management -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Color management</h3>
+    <hr>   
+    <a th:href="@{/admin/color/add}">
+        <button class="btn btn-success mb-3"><i class="fa-solid fa-plus"></i> Add new color</button>
+    </a> 
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Color name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="color : ${colors}">
+                        <th scope="row" th:text="${color.id}"></th>
+                        <td th:text="${color.name}"></td>
+                        <td>
+                            <div class="action-container mt-2 mb-2 d-flex justify-content-center">
+                                <a th:href="@{/admin/color/edit?id=} + ${color.id}" class="text-decoration-none">
+                                    <button class="btn me-1 bg-warning text-black text-decoration-none">
+                                        <i class="fa-solid fa-pencil"></i>
+                                    </button>
+                                </a>
+                                <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal" th:data-bs-colorid="${color.id}">
+                                    <button class="btn me-1 bg-danger text-white text-decoration-none">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Delete confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure that you want to delete this color?
+        </div>
+        <div class="modal-footer">
+            <form th:action="@{/admin/color/delete}" method="post">
+                <input type="hidden" id="colorId" name="colorId">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+<script>
+    const deleteModal = document.getElementById('deleteModal')
+    if (deleteModal) {
+        deleteModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget
+            const colorId = button.getAttribute('data-bs-colorid')
+
+            // Update the modal's content.
+            const colorIdModal = deleteModal.querySelector('#colorId')
+
+            colorIdModal.value = colorId
+        })
+    }
+</script>
+<!-- Color management -->

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <title>Your order</title>
+    </style>
+</head>
+
+<body style="background-color: #ececec;">
+    <th:block th:include="common/header"></th:block>
+    <div class="container" style="min-height: 80vh;">
+        <div sec:authorize="isAuthenticated()">
+            <h4 class="mt-5" th:inline="text"> Welcome, <b>
+                    <p sec:authentication="name" th:remove="tag"></p>
+                </b></h4>
+            <hr>
+        </div>
+        <div class="container-fluid">
+            <div class="container rounded mt-3 p-3 shadow" style="background-color: #ffffff; min-height: 75vh;">
+                <h3 class="fw-bold text-black pt-3 ps-3">Your orders</h3>
+                <a th:href="@{/home}" id="backBtn" class="text-decoration-none text-black mt-3 ms-3 fw-bold"><i
+                        class="fa-solid fa-arrow-left"></i> Continue shopping</a>
+                <div class="row gx-1 gy-1">
+                    <div class="col-lg-12">
+                        <div class="item-container d-flex flex-column m-3">
+                            <div class="accordion" id="accordionExample">
+                                <!-- item -->
+                                <div th:each="order : ${orders}" class="accordion-item shadow-sm mb-3 rounded border" style="overflow: hidden;">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" style="background-color: #cfe2ff;" type="button" data-bs-toggle="collapse"
+                                            th:data-bs-target="'#collapse' + ${order.id}" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            <div class="inf-container">
+                                                <p class="fs-5 mb-3">
+                                                    <b th:text="'[' + ${order.id} + ']'"></b>
+                                                    <b>Ordered date: </b><span class="me-3" th:text="${order.orderDate}"></span> <span th:text="${#strings.toString(order.status)} == 'STATUS_PAID' ? 'Paid' : 'Not paid'" th:classappend="${#strings.toString(order.status)} == 'STATUS_PAID' ? 'text-bg-success' : 'text-bg-danger'" class="badge"></span></p>
+                                                <hr style="width: 70%;">
+                                                <p class="fs-6 fw-bold mb-2"
+                                                    style="font-style: italic; text-decoration: underline;">Your
+                                                    information: </p>
+                                                <div class="ms-3">
+                                                    <p class="fs-6 mb-1"><b>Full name: </b> <span th:text="${order.name}"></span></p>
+                                                    <p class="fs-6 mb-1"><b>Address: </b> <span th:text="${order.address}"></span></p>
+                                                    <p class="fs-6 mb-1"><b>Phone: </b> <span th:text="${order.phoneNumber}"></span></p>
+                                                </div>
+                                                <p class="fs-4 mt-3 fw-bold text-danger" th:text="'$' + ${order.total}"></p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div th:id="'collapse' + ${order.id}" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <p class="fs-6 fw-bold text-decoration-underline" style="margin-bottom: 10px; font-style: italic;">Your ordered products:</p>
+                                            <!-- Details -->
+                                            <div th:if="${order.orderItems} != null" th:each="item : ${order.orderItems}" class="mb-3 p-3 rounded d-flex align-items-center shadow-sm"
+                                                style="background-color: #ececec;">
+                                                <div class="img-container me-3 shadow-sm rounded"
+                                                    style="width: 60px; height: 60px; overflow: hidden;">
+                                                    <img th:src="${item.product.image}" class="object-fit-cover"
+                                                        style="width: 100%; height: 100%;">
+                                                </div>
+                                                <div class="product-detail d-flex flex-column">
+                                                    <a th:href="@{/product/} + ${item.product.id}" class="text-dark text-decoration-none">
+                                                        <b style="margin-bottom: 3px;" th:text="${item.product.name}"></b>
+                                                    </a>
+                                                    <span style="margin-bottom: 0px;" th:text="'x' + ${item.quantity}"></span>
+                                                    <b class="text-danger" th:text="'$' + ${item.product.price}"></b>
+                                                </div>
+                                            </div>
+                                            <!-- Details -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- item -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="/common/footer"></th:block>
+</body>
+
+</html>

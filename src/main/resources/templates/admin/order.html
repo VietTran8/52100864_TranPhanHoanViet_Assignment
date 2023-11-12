@@ -1,0 +1,47 @@
+<!-- Color management -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Orders management</h3>
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Ordered date</th>
+                        <th scope="col">Full name</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <th scope="row" th:text="${order.id}"></th>
+                        <td th:text="${order.orderDate}"></td>
+                        <td th:text="${order.name}"></td>
+                        <td th:text="'$' + ${order.total}"></td>
+                        <td>
+                            <span th:text="${#strings.toString(order.status)} == 'STATUS_PAID' ? 'Paid' : 'Not paid'" th:classappend="${#strings.toString(order.status)} == 'STATUS_PAID' ? 'text-bg-success' : 'text-bg-danger'" class="badge"></span>
+                        </td>
+                        <td>
+                            <div class="action-container mt-2 mb-2 d-flex justify-content-center">
+                                <a th:href="@{/admin/order/detail?id=} + ${order.id}" class="text-decoration-none">
+                                    <button class="btn me-1 bg-primary text-white text-decoration-none">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </button>
+                                </a>
+                                <a th:href="@{/admin/order/edit?id=} + ${order.id}" class="text-decoration-none">
+                                    <button class="btn me-1 bg-warning text-black text-decoration-none">
+                                        <i class="fa-solid fa-pencil"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>    
+</div>
+<!-- Color management -->

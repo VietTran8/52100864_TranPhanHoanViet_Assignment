@@ -1,0 +1,15 @@
+<!-- Add brand -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Add brand</h3>
+    <hr>    
+    <div class="row">
+        <form th:action="@{/admin/brand/add}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Brand name</label>
+                <input type="text" class="form-control" name="brandName">
+            </div>
+            <button type="submit" class="btn btn-success">Add brand</button>
+        </form>
+    </div>
+</div>
+<!-- Add brand -->

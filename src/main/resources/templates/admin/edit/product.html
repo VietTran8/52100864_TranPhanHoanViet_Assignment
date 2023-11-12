@@ -1,0 +1,78 @@
+<!-- Edit product -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Edit product</h3>
+    <hr>    
+    <div class="row">
+        <form class="container-fluid" th:action="@{/admin/product/edit}" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <div class="mb-3 col-lg-6">
+                    <label class="fw-bold form-label">Product name</label>
+                    <input type="text" class="form-control" name="name" th:value="${product.name}" required>
+                </div>
+                <div class="mb-3 col-lg-6">
+                    <label class="fw-bold form-label">Product price</label>
+                    <input type="number" class="form-control" th:value="${product.price}" name="price" min="0" required>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Image (if you don't want to change the image, just leave this blank)</label>
+                    <input type="file" class="form-control" name="image" id="image-input" accept="image/png, image/gif, image/jpeg">
+                    <div class="rounded border mt-3 d-flex justify-content-center align-items-center">
+                        <img class="m-3 object-fit-contain" id="img-upload"
+                            th:src="${product.image}" alt="" style="width: 300px; height: 300px;">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Color</label>
+                    <select class="form-select" style="cursor: pointer;" name="color">
+                        <div th:if="${product.color} != null">
+                            <option th:each="color : ${colors}" th:value="${color.id}" th:text="${color.name}" th:selected="${color.id} == ${product.color.id}"></option>
+                        </div>
+                        <div th:if="${product.color} == null">
+                            <option selected value="-1">Please choose color</option>
+                            <option th:each="color : ${colors}" th:value="${color.id}" th:text="${color.name}"></option>
+                        </div>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Category</label>
+                    <select class="form-select" style="cursor: pointer;" name="category">
+                        <div th:if="${product.category} != null">
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id} == ${product.category.id}"></option>
+                        </div>
+                        <div th:if="${product.category} == null">
+                            <option selected value="-1">Please choose color</option>
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </div>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Brand</label>
+                    <select class="form-select" style="cursor: pointer;" name="brand">
+                        <div th:if="${product.brand} != null">
+                            <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}" th:selected="${brand.id} == ${product.brand.id}"></option>
+                        </div>
+                        <div th:if="${product.brand} == null">
+                            <option selected value="-1">Please choose color</option>
+                            <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
+                        </div>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Description</label>
+                    <textarea class="form-control" name="description" rows="10" th:text="${product.description}"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Update product</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    const image = document.getElementById("img-upload"),
+    input = document.getElementById("image-input")
+
+    input.addEventListener("change", () => {
+        image.src = URL.createObjectURL(input.files[0])
+    })
+</script>
+<!-- Edit product -->

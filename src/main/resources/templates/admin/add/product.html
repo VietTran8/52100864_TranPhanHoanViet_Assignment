@@ -1,0 +1,50 @@
+<!-- Add product -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Add product</h3>
+    <hr>    
+    <div class="row">
+        <form class="container-fluid" th:action="@{/admin/product/add}" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="mb-3 col-lg-6">
+                    <label class="fw-bold form-label">Product name</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="mb-3 col-lg-6">
+                    <label class="fw-bold form-label">Product price</label>
+                    <input type="number" class="form-control" name="price" min="0" required>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Image</label>
+                    <input type="file" class="form-control" name="image" accept="image/png, image/gif, image/jpeg" required>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Color</label>
+                    <select class="form-select" style="cursor: pointer;" name="color">
+                        <option selected value="-1">Please choose color</option>
+                        <option th:each="color : ${colors}" th:value="${color.id}" th:text="${color.name}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Category</label>
+                    <select class="form-select" style="cursor: pointer;" name="category">
+                        <option selected value="-1">Please choose category</option>
+                        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Brand</label>
+                    <select class="form-select" style="cursor: pointer;" name="brand">
+                        <option selected value="-1">Please choose brand</option>
+                        <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold form-label">Description</label>
+                    <textarea class="form-control" name="description" rows="10"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Add product</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Add product -->

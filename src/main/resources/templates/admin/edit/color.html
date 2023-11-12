@@ -1,0 +1,16 @@
+<!-- Edit color -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Edit color</h3>
+    <hr>    
+    <div class="row">
+        <form th:action="@{/admin/color/edit}" method="post">
+            <div class="mb-3">
+                <input type="hidden" name="id" th:value="${color.id}">
+                <label class="form-label">Color name</label>
+                <input type="text" class="form-control" name="colorName" th:value="${color.name}">
+            </div>
+            <button type="submit" class="btn btn-success">Update color</button>
+        </form>
+    </div>
+</div>
+<!-- Edit color -->

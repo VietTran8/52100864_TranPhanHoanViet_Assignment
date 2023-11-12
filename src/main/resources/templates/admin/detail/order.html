@@ -1,0 +1,56 @@
+<!-- Order detail -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Order detail</h3>
+    <hr>
+    <div class="row">
+        <div class="accordion" id="accordionExample">
+            <!-- item -->
+            <div th:if="${order} != null" class="accordion-item shadow-sm mb-3 rounded border" style="overflow: hidden;">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true"
+                        aria-controls="collapseOne">
+                        <div class="inf-container">
+                            <p class="fs-5 mb-3"><b>Ordered date: </b> <span class="me-3" th:text="${order.orderDate}"></span> <span th:text="${#strings.toString(order.status)} == 'STATUS_PAID' ? 'Paid' : 'Not paid'" th:classappend="${#strings.toString(order.status)} == 'STATUS_PAID' ? 'text-bg-success' : 'text-bg-danger'" class="badge"></span></p>
+                            <hr style="width: 70%;">
+                            <p class="fs-6 fw-bold mb-2"
+                                style="font-style: italic; text-decoration: underline;">Customer
+                                information: </p>
+                            <div class="ms-3">
+                                <p class="fs-6 mb-1"><b>Full name: </b> <span th:text="${order.name}"></span></p>
+                                <p class="fs-6 mb-1"><b>Address: </b> <span th:text="${order.address}"></span></p>
+                                <p class="fs-6 mb-1"><b>Phone: </b> <span th:text="${order.phoneNumber}"></span></p>
+                            </div>
+                            <p class="fs-4 mt-3 fw-bold text-danger" th:text="'$' + ${order.total}"></p>
+                        </div>
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p class="fs-6 fw-bold text-decoration-underline" style="margin-bottom: 10px; font-style: italic;">Customer ordered products:</p>
+                        <!-- Details -->
+                        <div th:if="${order.orderItems} != null" th:each="item : ${order.orderItems}" class="mb-3 p-3 rounded d-flex align-items-center shadow-sm"
+                            style="background-color: #ececec;">
+                            <div class="img-container me-3 shadow-sm rounded"
+                                style="width: 60px; height: 60px; overflow: hidden;">
+                                <img th:src="${item.product} != null ? ${item.product.image} : ''" class="object-fit-cover"
+                                    style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="product-detail d-flex flex-column">
+                                <a th:href="@{/product/} + ${item.product.id}" class="text-dark text-decoration-none">
+                                    <b style="margin-bottom: 3px;" th:text="${item.product} != null ? ${item.product.name} : 'unknown'"></b>
+                                </a>
+                                <span style="margin-bottom: 0px;" th:text="'x' + ${item.quantity}"></span>
+                                <b class="text-danger" th:text="${item.product} != null ? '$' + ${item.product.price} : 'unknown'"></b>
+                            </div>
+                        </div>
+                        <!-- Details -->    
+                    </div>
+                </div>
+            </div>
+            <!-- item -->
+        </div>
+    </div>    
+</div>
+<!-- Order detail -->

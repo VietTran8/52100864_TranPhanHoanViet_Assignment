@@ -1,0 +1,77 @@
+<!-- header -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-success" style="font-size: 25px;" th:href="@{/home}">Technology Vip</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Account
+            </a>
+            <div sec:authorize="isAuthenticated()">
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" th:href="@{/order/history}">Your orders</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item fw-bold text-danger" th:href="@{/logout}">Logout</a></li>
+              </ul>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+              <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" th:href="@{/login}">Sign in</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" th:href="@{/signup}">Sign up</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+        <div sec:authorize="hasRole('ADMIN')">
+          <a th:href="@{/admin}" class="btn btn-outline-danger">Go to admin page</a>
+        </div>
+        <form class="d-flex" role="search" th:action="@{/product/search-result}">
+            <div class="dropdown">
+                <button class="btn me-2 my-auto dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
+                <ul class="dropdown-menu">
+                    <li class="p-3">
+                        <label for="color" class="fw-bold mb-1">Color</label>
+                        <select class="form-select" id="color" style="cursor: pointer;" name="color">
+                            <option selected value="">None</option>
+                            <option th:each="color : ${headerColors}" th:value="${color.name}" th:text="${color.name}"></option>
+                        </select>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="p-3">
+                        <label for="category" class="fw-bold mb-1">Category</label>
+                        <select class="form-select" id="category" style="cursor: pointer;" name="category">
+                            <option selected value="">None</option>
+                            <option th:each="category : ${headerCategories}" th:value="${category.name}" th:text="${category.name}"></option>
+                        </select>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="p-3">
+                        <label for="brand" class="fw-bold mb-1">Brand</label>
+                        <select class="form-select" id="brand" style="cursor: pointer;" name="brand">
+                            <option selected value="">None</option>
+                            <option th:each="brand : ${headerBrands}" th:value="${brand.name}" th:text="${brand.name}"></option>
+                        </select>
+                    </li>   
+                </ul>
+            </div>
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+            <button class="btn btn-outline-success me-2" type="submit">Search</button>
+        </form>
+        <a th:href="@{/cart}">
+          <button class="btn btn-outline-success mt-lg-0 mt-md-2"><i class="fa-solid fa-cart-shopping"></i> Cart</button>
+        </a>
+      </div>
+    </div>
+  </nav>
+<!-- header -->

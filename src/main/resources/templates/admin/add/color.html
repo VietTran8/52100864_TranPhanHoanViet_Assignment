@@ -1,0 +1,15 @@
+<!-- Add color -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Add color</h3>
+    <hr>    
+    <div class="row">
+        <form th:action="@{/admin/color/add}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Color name</label>
+                <input type="text" class="form-control" name="colorName">
+            </div>
+            <button type="submit" class="btn btn-success">Add color</button>
+        </form>
+    </div>
+</div>
+<!-- Add color -->

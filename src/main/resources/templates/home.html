@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <title>Homepage</title>
+</head>
+<body>
+    <th:block th:include="common/header"></th:block>
+    <div class="container" style="min-height: 100vh;">
+        <div sec:authorize="isAuthenticated()">
+            <h4 class="mt-5" th:inline="text"> Welcome, <b><p sec:authentication="name" th:remove="tag"></p></b></h4>
+            <hr>
+        </div>
+        <h3 class="fw-bold text-secondary mt-5 mb-4">All products</h3>
+        <div class="row gx-5 gy-5">
+            <!-- Item -->
+            <div th:each="product : ${products}" class="col-12 col-lg-3 col-md-6">
+                <div class="card shadow-sm" style="width: 18rem; overflow: hidden;">
+                    <div style="width: 287px; height: 287px; background-color: rgb(246, 246, 246);">
+                        <img th:src="${product.image}" class="object-fit-cover card-img-top" th:alt="${product.name}" style="width: 100%; height: 100%;">
+                    </div>
+                    <div class="card-body bg-secondary-subtle">
+                      <a th:href="@{/product/} + ${product.id}" class="h5 card-title text-primary text-decoration-none d-inline-block text-truncate" style="width: 100%;" th:text="${product.name}"></a>
+                      <p class="d-flex justify-content-between mt-3 mb-3">
+                        <span class="card-text fw-bold"><i class="fa-solid fa-dollar-sign"></i> <span th:text="${product.price}"></span></span>
+                        <span class="card-text fw-bold" th:text="${product.brand} != null ? ${product.brand.name} : 'unknown'"></span>
+                      </p>
+                      <div class="d-flex justify-content-end">
+                        <a href="#" class="btn btn-success mt-1" data-bs-toggle="modal" data-bs-target="#addToCartModal" th:data-bs-productid="${product.id}">Add to cart</a>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <!-- Item -->
+        </div>
+    </div>
+    
+
+    <!-- Add to cart modal -->
+    <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add to cart</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="hidden" value="" id="productId">
+                        <span class="input-group-text">Quantity</span>
+                        <input min="0" type="number" aria-label="Quantity" class="form-control" value="1" id="quantity">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="btnAddToCart"><i class="fa-solid fa-plus"></i> Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add to cart modal -->
+    <div class="bg-success toast position-fixed bottom-0 end-0 mb-5 me-2" role="alert" aria-live="assertive" aria-atomic="true" id="cart-added-toast">
+        <div class="toast-header">
+            <strong class="me-auto">Add to cart successfully</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body text-white">
+            Product is added to shopping cart
+        </div>
+    </div>
+    <!-- Add to cart modal -->
+    <th:block th:include="/common/footer"></th:block>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</body>
+<script>
+    const addToCartModal = document.getElementById('addToCartModal')
+    if (addToCartModal) {
+        addToCartModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget
+            const productId = button.getAttribute('data-bs-productid')
+
+            // Update the modal's content.
+            const productIdModal = addToCartModal.querySelector('#productId')
+
+            productIdModal.value = productId
+        })
+    }
+
+    let btnAdd = document.getElementById("btnAddToCart")
+    let productId = $('#productId')
+    let quantity = $('#quantity')
+    let successToast = $('#cart-added-toast')
+
+    btnAdd.addEventListener("click", () => {
+        console.log("hello")
+        $.ajax({
+            url: "http://localhost:8080/cart/add",
+            method: "post",
+            async: false,
+            data: JSON.stringify({
+                productId: productId.val(),
+                quantity: quantity.val()
+            }),
+            contentType: 'application/json',
+            success: (result) => {
+                console.log(result)
+                if(result != null){
+                    if(result.status){
+                        successToast.addClass("show")
+                        setTimeout(() => {
+                            successToast.removeClass("show")
+                        }, 5000)
+                    }
+                }
+            }
+        })
+    })
+</script>
+</html>

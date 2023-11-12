@@ -1,0 +1,35 @@
+<!-- Product detail -->
+<div class="container-fluid">
+    <h3 class="fw-bold">Product detail</h3>
+    <hr> 
+    <div class="row">
+        <div class="container-fluid mt-5">
+            <div class="row gx-5">
+                <div class="col-lg-6">
+                    <div class="img-container" style="width: 100%; height: 60vh; border-radius: 20px; overflow: hidden;">
+                        <img class="object-fit-contain"
+                            th:src="${product.image}" th:alt="${product.name}"
+                            style="width: 100%; height: 100%;">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="content-container flex-column d-flex justify-content-center align-items-start"
+                        style="height: 100%; width: 100%;">
+                        <div class="">
+                            <p th:text="'Product id: ' + ${product.id}"></p>
+                            <h3 th:text="${product.name}"></h3>
+                            <ul>
+                                <li><strong>Brand:</strong> <span th:text="${product.brand} != null ? ${product.brand.name} : 'unknown'"></span></li>
+                                <li><strong>Category:</strong> <span th:text="${product.category} != null ? ${product.category.name} : 'unknown'"></span></li>
+                                <li><strong>Color:</strong> <span th:text="${product.color} != null ? ${product.color.name} : 'unknown'"></span></li>
+                            </ul>
+                            <div style="font-size: large;" th:text="${product.description}"></div>
+                            <h4 class="mt-4 mb-4 text-danger" th:text="'$' + ${product.price}"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>
+<!-- Product detail -->
